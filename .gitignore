@@ -1,0 +1,14 @@
+# CMake
+build
+
+# clangd
+.cache
+compile_commands.json
+
+# VSCode
+.vscode
+
+# STM32Cube
+.project
+.cproject
+
