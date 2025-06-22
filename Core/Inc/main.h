@@ -59,8 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define CAM_SIGNAL_Pin GPIO_PIN_13
 #define CAM_SIGNAL_GPIO_Port GPIOB
+#define CAM_SIGNAL_EXTI_IRQn EXTI15_10_IRQn
 #define CRANK_SIGNAL_Pin GPIO_PIN_14
 #define CRANK_SIGNAL_GPIO_Port GPIOB
+#define CRANK_SIGNAL_EXTI_IRQn EXTI15_10_IRQn
 
 /* USER CODE BEGIN Private defines */
 
