@@ -32,14 +32,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifdef ULOG_ENABLED // whole file...
 
 #include <stdarg.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 
 #include "ulog.h"
+#include "us_timer.h"
 #include "usart.h"
 #include "stm32f4xx_hal_uart.h"
-#include "us_timer.h"
 
 // Custom Logger
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -48,19 +48,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * @brief Retargets C lib printf to USART2.
  * @retval None.
  */
-PUTCHAR_PROTOTYPE
-{
+PUTCHAR_PROTOTYPE {
   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 1000);
 
   return ch;
 }
 
-void console_logger(ulog_level_t severity, char *msg)
-{
-  printf("%d [%s]: %s\n\r",
-         (int)(get_micros() / 1000),
-         ulog_level_name(severity),
-         msg);
+void console_logger(ulog_level_t severity, char *msg) {
+  printf("%d [%s]: %s\n\r", get_micros() / 1000,
+         ulog_level_name(severity), msg);
 }
 
 // =============================================================================

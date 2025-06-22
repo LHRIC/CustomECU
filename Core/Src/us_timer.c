@@ -9,11 +9,11 @@ void init_us_timer(void) {
 
   htim2.Instance = TIM2;
 
-  // Set to 1 us tick, see clock diagram in STM32CubeMX.
-  htim2.Init.Prescaler = HAL_RCC_GetPCLK2Freq() * 2;
+  // Set to 1 us tick (1 MHz clock), see clock diagram in STM32CubeMX.
+  htim2.Init.Prescaler = 84;
 
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 4294967295; // ~70 Min overflow.
+  htim2.Init.Period = (uint32_t) (-1); // ~70 Min overflow.
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK) {
@@ -28,6 +28,10 @@ void init_us_timer(void) {
   if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK) {
     ULOG_ERROR("Failed to initialize master configuration!");
   }
+
+  HAL_TIM_Base_Start(&htim2);
 }
 
-inline uint32_t get_micros(void) { return TIM2->CNT; }
+inline uint32_t get_micros(void) { 
+  return TIM2->CNT;
+}
