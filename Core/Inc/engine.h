@@ -1,5 +1,5 @@
-#ifndef __TASKS_H
-#define __TASKS_H
+#ifndef __ENGINE_H
+#define __ENGINE_H
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,4 +34,4 @@ void detectSync(void);
 #ifdef __cplusplus
 }
 #endif
-#endif /* __TASKS_H */
+#endif /* __ENGINE_H */

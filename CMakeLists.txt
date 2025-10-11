@@ -54,7 +54,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/us_timer.c
     Core/Src/ulog.c
     Core/Src/sampling.cpp
-    Core/Src/tasks.cpp
+    Core/Src/engine.cpp
 )
 
 # Add include paths

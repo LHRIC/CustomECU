@@ -73,7 +73,7 @@ add_executable(test_sync_detection
     unit/test_sync_detection.cpp
     ${MOCK_SOURCES}
     ${SOURCE_UNDER_TEST}
-    ${CMAKE_SOURCE_DIR}/../Core/Src/tasks.cpp
+    ${CMAKE_SOURCE_DIR}/../Core/Src/engine.cpp
 )
 target_include_directories(test_sync_detection PRIVATE
     ${CMAKE_SOURCE_DIR}/../Core/Inc
