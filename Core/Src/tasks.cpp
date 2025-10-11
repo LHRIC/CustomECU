@@ -46,27 +46,7 @@ void criticalEngineTask(void *argument) {
       detectSync();
     }
 
-    time = get_micros();
-    uint32_t dt = time - last_time;
-    uint32_t dt_ms = dt / 1000;
-
-    // Print every second.
-    // if (dt >= 1000000) {
-    //   last_time = time;
-    //   ULOG_INFO("Detected Sync! Current Crank Angle: %f",
-    //             syncState.current_engine_angle);
-    //   ULOG_INFO("Fraction of tooth: %f", syncState.fraction_of_tooth);
-    //   ULOG_INFO("Tooth period (us): %f", syncState.tooth_period_us);
-    //   ULOG_INFO("Crank index: %d", syncState.crank_index);
-    //   ULOG_INFO("Engine phase: %d", syncState.engine_phase);
-    // }
-
-    if (dt_ms >= 10) {
-      last_time = time;
-      float current_angle = get_current_engine_angle();
-      float current_fraction = get_current_fraction_of_tooth();
-      ULOG_DEBUG("Crank Angle: %f // Tooth Period: %f // Fraction: %f",
-                 current_angle, syncState.tooth_period_us, current_fraction);
-    }
+    // TODO: Schedule fuel/ignition events based on current angle
+    osDelay(1);
   }
 }
