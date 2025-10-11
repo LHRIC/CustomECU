@@ -32,9 +32,15 @@ cmake ..
 echo -e "${YELLOW}Building tests...${NC}"
 make
 
+# Create symlink to compile_commands.json for IDE support
+if [ -f "compile_commands.json" ]; then
+    echo -e "${YELLOW}Creating symlink to compile_commands.json...${NC}"
+    ln -sf build/compile_commands.json ../compile_commands.json
+fi
+
 # Run tests
-echo -e "\n${YELLOW}Running tests...${NC}\n"
-if ./run_tests; then
+echo -e "\n${YELLOW}Running tests with CTest...${NC}\n"
+if ctest --output-on-failure --verbose; then
     echo -e "\n${GREEN}✓ All tests passed!${NC}"
     exit 0
 else

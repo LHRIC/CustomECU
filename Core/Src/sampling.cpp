@@ -30,14 +30,19 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
 void on_crank_tooth() {
   uint32_t current_time = get_micros();
-  double dt = double(current_time - syncState.last_crank_time_us);
 
-  if (syncState.tooth_period_us <= 0.0) {
-    syncState.tooth_period_us = dt;
-  } else {
-    // Run a exponential moving average to smooth out jitter.
-    syncState.tooth_period_us =
-        ALPHA * dt + (1.0 - ALPHA) * syncState.tooth_period_us;
+  // Only calculate period if we've seen at least one tooth before
+  if (syncState.crank_counter > 0) {
+    double dt = double(current_time - syncState.last_crank_time_us);
+
+    if (syncState.tooth_period_us <= 0.0) {
+      // First valid period measurement
+      syncState.tooth_period_us = dt;
+    } else {
+      // Run a exponential moving average to smooth out jitter.
+      syncState.tooth_period_us =
+          ALPHA * dt + (1.0 - ALPHA) * syncState.tooth_period_us;
+    }
   }
 
   syncState.last_crank_time_us = current_time;
@@ -63,14 +68,19 @@ float get_current_fraction_of_tooth() {
   }
 
   uint32_t current_time = get_micros();
+
+  // Handle case where current_time is less than last_crank_time_us
+  // (shouldn't happen in normal operation, but guard against it)
+  if (current_time < syncState.last_crank_time_us) {
+    return 0.0f;
+  }
+
   float dt = (float)(current_time - syncState.last_crank_time_us);
   float fraction = dt / (float)syncState.tooth_period_us;
 
   // Clamp between 0 and 1
   if (fraction > 1.0f) {
     fraction = 1.0f;
-  } else if (fraction < 0.0f) {
-    fraction = 0.0f;
   }
 
   return fraction;

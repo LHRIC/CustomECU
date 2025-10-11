@@ -6,10 +6,6 @@
 #include "ulog.h"
 #include "us_timer.h"
 
-const uint8_t cranking_rpm_threshold = (uint8_t)400;
-const uint32_t cranking_rpm_threshold_us =
-    (cranking_rpm_threshold / 60) * 1000000;
-
 uint32_t last_time = 0;
 uint32_t time = 0;
 
@@ -22,7 +18,6 @@ void detectSync(void) {
   // diff btwn teeth == 360deg in crank: 360deg into cycle.
   // diff btwn teeth == 30deg in crank: 390deg into cycle.
   uint8_t delta_teeth = syncState.get_cam_delta();
-  ULOG_DEBUG("Delta teeth: %d", delta_teeth);
   switch (delta_teeth) {
   case 1:
     syncState.crank_index = 1;
