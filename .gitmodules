@@ -1,0 +1,6 @@
+[submodule "test/frameworks/Unity"]
+	path = test/frameworks/Unity
+	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "test/frameworks/CMock"]
+	path = test/frameworks/CMock
+	url = https://github.com/ThrowTheSwitch/CMock.git
