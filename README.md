@@ -110,6 +110,7 @@ See [LICENSE](LICENSE) file for details.
 ## CI/CD
 
 GitHub Actions automatically:
+
 - Runs unit tests on every push
 - Builds firmware
 - Uploads artifacts
