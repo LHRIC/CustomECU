@@ -1,0 +1,45 @@
+name: Build Firmware
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install ARM toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          gcc-arm-none-eabi \
+          binutils-arm-none-eabi \
+          libnewlib-arm-none-eabi \
+          cmake \
+          ninja-build
+    
+    - name: Build firmware
+      run: |
+        chmod +x build_firmware.sh
+        ./build_firmware.sh
+    
+    - name: Upload firmware artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware
+        path: |
+          build/CustomECU.elf
+          build/CustomECU.map
+        if-no-files-found: error
+    
+    - name: Display memory usage
+      run: |
+        arm-none-eabi-size build/CustomECU.elf

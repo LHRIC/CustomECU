@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          gcc \
+          g++ \
+          ninja-build
+    
+    - name: Run unit tests
+      run: |
+        chmod +x run_tests.sh
+        ./run_tests.sh
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: test/build/Testing/
+        if-no-files-found: ignore
+
+  build:
+    name: Build Firmware
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install ARM toolchain and build tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          gcc-arm-none-eabi \
+          binutils-arm-none-eabi \
+          libnewlib-arm-none-eabi \
+          cmake \
+          ninja-build
+    
+    - name: Build firmware
+      run: |
+        chmod +x build_firmware.sh
+        ./build_firmware.sh
+    
+    - name: Display memory usage
+      run: |
+        echo "=== Memory Usage ===" 
+        arm-none-eabi-size build/CustomECU.elf
+    
+    - name: Upload firmware artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware
+        path: |
+          build/CustomECU.elf
+          build/CustomECU.map
+        if-no-files-found: error
