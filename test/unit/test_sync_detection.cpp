@@ -10,8 +10,8 @@
 // Include sampling header
 #include "sampling.hpp"
 
-// Declare the function we're testing (needs C linkage)
-extern "C" void detectSync(void);
+// Declare the function we're testing
+void detectSync(void);
 
 void setUp(void) {
   // Reset sync state before each test
@@ -31,12 +31,12 @@ void tearDown(void) {
 }
 
 // ============================================================================
-// Test: Sync Detection with Delta = 1
+// Test: Sync Detection with Delta = 2
 // ============================================================================
-void test_detect_sync_with_delta_1_sets_correct_state(void) {
-  // Setup: cam teeth with delta of 1 crank tooth
+void test_detect_sync_with_delta_2_sets_correct_state(void) {
+  // Setup: cam teeth with delta of 2 crank teeth
   syncState.cam_crank_counter = 5;
-  syncState.last_cam_crank_counter = 4; // Delta = 1
+  syncState.last_cam_crank_counter = 3; // Delta = 2
 
   detectSync();
 
@@ -46,12 +46,12 @@ void test_detect_sync_with_delta_1_sets_correct_state(void) {
 }
 
 // ============================================================================
-// Test: Sync Detection with Delta = 11
+// Test: Sync Detection with Delta = 10
 // ============================================================================
-void test_detect_sync_with_delta_11_sets_correct_state(void) {
-  // Setup: cam teeth with delta of 11 crank teeth
+void test_detect_sync_with_delta_10_sets_correct_state(void) {
+  // Setup: cam teeth with delta of 10 crank teeth
   syncState.cam_crank_counter = 20;
-  syncState.last_cam_crank_counter = 9; // Delta = 11
+  syncState.last_cam_crank_counter = 10; // Delta = 10
 
   detectSync();
 
@@ -162,7 +162,7 @@ void test_sync_can_be_reestablished_after_loss(void) {
 
   // Reestablish sync
   syncState.cam_crank_counter = 31;
-  syncState.last_cam_crank_counter = 20; // Delta = 11
+  syncState.last_cam_crank_counter = 21; // Delta = 10
   detectSync();
   TEST_ASSERT_TRUE(syncState.synced);
   TEST_ASSERT_EQUAL_UINT8(10, syncState.crank_index);
@@ -190,8 +190,8 @@ int main(void) {
   UNITY_BEGIN();
 
   // Sync detection with valid deltas
-  RUN_TEST(test_detect_sync_with_delta_1_sets_correct_state);
-  RUN_TEST(test_detect_sync_with_delta_11_sets_correct_state);
+  RUN_TEST(test_detect_sync_with_delta_2_sets_correct_state);
+  RUN_TEST(test_detect_sync_with_delta_10_sets_correct_state);
   RUN_TEST(test_detect_sync_with_delta_12_sets_correct_state);
 
   // Sync detection with invalid deltas

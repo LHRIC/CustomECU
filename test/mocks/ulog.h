@@ -14,7 +14,7 @@ extern "C" {
 #define ULOG_INFO(...)                                                         \
   printf("[INFO] " __VA_ARGS__);                                               \
   printf("\n")
-#define ULOG_WARN(...)                                                         \
+#define ULOG_WARNING(...)                                                         \
   printf("[WARN] " __VA_ARGS__);                                               \
   printf("\n")
 #define ULOG_ERROR(...)                                                        \

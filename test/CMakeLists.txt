@@ -83,7 +83,22 @@ target_include_directories(test_sync_detection PRIVATE
 target_link_libraries(test_sync_detection unity)
 target_compile_options(test_sync_detection PRIVATE -DUNIT_TEST)
 
+# Test 3: Sync validation tests
+add_executable(test_sync_validation
+    unit/test_sync_validation.cpp
+    ${MOCK_SOURCES}
+    ${SOURCE_UNDER_TEST}
+)
+target_include_directories(test_sync_validation PRIVATE
+    ${CMAKE_SOURCE_DIR}/../Core/Inc
+    ${CMAKE_SOURCE_DIR}/mocks
+    frameworks/Unity/src
+)
+target_link_libraries(test_sync_validation unity)
+target_compile_options(test_sync_validation PRIVATE -DUNIT_TEST)
+
 # Add tests to CTest
 enable_testing()
 add_test(NAME SamplingTests COMMAND test_sampling)
 add_test(NAME SyncDetectionTests COMMAND test_sync_detection)
+add_test(NAME SyncValidationTests COMMAND test_sync_validation)

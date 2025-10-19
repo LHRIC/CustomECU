@@ -31,6 +31,19 @@ float get_current_fraction_of_tooth();
  */
 float get_current_engine_angle();
 
+
+/**
+ * @brief Handles synchronization detection with cam and crank signals.
+ * Specifically for the Honda CBR600CC engine with 12 equally-spaced
+ * crank teeth and 3 cam teeth, with one offset 30deg.
+ *
+ * Updates synced bool in SyncState struct.
+ *
+ * @param None.
+ * @retval None.
+ */
+void detectSync(void);
+
 // General Engine Synchronization State.
 struct SyncState {
   // Whether we have locked synchronization or not.
@@ -57,7 +70,7 @@ struct SyncState {
   // Instantaneous period between crank teeth (in microseconds).
   volatile double tooth_period_us = 0.0;
 
-  // Engine phase (0 = 0-360, 1 = 360-720)
+  // Engine phase (0 = 0-360, 1 = 360-720).
   bool engine_phase;
 
   // Gets the delta in crank teeth between the last two cam teeth.

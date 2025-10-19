@@ -19,18 +19,6 @@ extern "C" {
  */
 void criticalEngineTask(void *argument);
 
-/**
- * @brief Handles synchronization detection with cam and crank signals.
- * Specifically for the Honda CBR600CC engine with 12 equally-spaced
- * crank teeth and 3 cam teeth, with one offset 30deg.
- *
- * Updates synced bool in SyncState struct.
- *
- * @param None.
- * @retval None.
- */
-void detectSync(void);
-
 #ifdef __cplusplus
 }
 #endif
