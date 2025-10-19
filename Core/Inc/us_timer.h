@@ -1,5 +1,9 @@
 #ifndef __US_TIMER_H
 #define __US_TIMER_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 /**
@@ -14,4 +18,7 @@ void init_us_timer(void);
  */
 uint32_t get_micros(void);
 
+#ifdef __cplusplus
+}
 #endif
+#endif /* __US_TIMER_H */

@@ -7,6 +7,12 @@ cmake_minimum_required(VERSION 3.22)
 # User is free to modify the file as much as necessary
 #
 
+# Include toolchain file before project() if not already set
+# (CMake presets will set this automatically)
+if(NOT CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc-arm-none-eabi.cmake")
+endif()
+
 # Setup compiler settings
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -21,18 +27,15 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME CustomECU)
 
-# Include toolchain file
-include("cmake/gcc-arm-none-eabi.cmake")
+# Core project settings
+project(${CMAKE_PROJECT_NAME})
+message("Build type: " ${CMAKE_BUILD_TYPE})
 
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# Enable CMake support for ASM and C languages
-enable_language(C ASM)
-
-# Core project settings
-project(${CMAKE_PROJECT_NAME})
-message("Build type: " ${CMAKE_BUILD_TYPE})
+# Enable CMake support for ASM language (after project)
+enable_language(ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
@@ -48,10 +51,10 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
-    Core/Src/tasks.c
     Core/Src/us_timer.c
     Core/Src/ulog.c
-    Core/Src/sampling.c
+    Core/Src/sampling.cpp
+    Core/Src/engine.cpp
 )
 
 # Add include paths
